@@ -74,11 +74,8 @@ def mod_inverse(a, m):
         x0, x1 = x1 - q * x0, x0
     return x1 + m0 if x1 < 0 else x1
 
-def generate_keys():
-    # get p and q from user
-    p = int(input("Enter p number: "))
-    q = int(input("Enter q number: "))
-
+def generate_keys(p, q):
+    
     if not (is_prime(p) and is_prime(q)):
         return "Numbers are not prime, choose other"
 
@@ -114,16 +111,27 @@ def decrypt(ciphertext, private_key):
     plaintext = pow(ciphertext, d, n)
     return plaintext
 
+
+# get p and q from user
+p = int(input("Enter p number: "))
+q = int(input("Enter q number: "))
+n = p * q
+
 # show keys
-public_key, private_key = generate_keys()
+public_key, private_key = generate_keys(p, q)
 print(f"Public Key: {public_key}")
 print(f"Private Key: {private_key}")
 
-# encypt the message
-plaintext_message = int(input("Enter the plaintext message: "))
-ciphertext_message = encrypt(plaintext_message, public_key)
-print(f"Ciphertext: {ciphertext_message}")
 
-# decrypt the message
-decrypted_message = decrypt(ciphertext_message, private_key)
-print(f"Decrypted Message: {decrypted_message}")
+plaintext_message = int(input("Enter the plaintext message: "))
+if ((plaintext_message <= (n-1)) and (plaintext_message > 0)):
+    # encypt the message
+    ciphertext_message = encrypt(plaintext_message, public_key)
+    print(f"Ciphertext: {ciphertext_message}")
+    
+    # decrypt the message
+    decrypted_message = decrypt(ciphertext_message, private_key)
+    print(f"Decrypted Message: {decrypted_message}")
+else:
+    print("Error. Plaintext message is greater than n")
+
